@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+	{% block body %}
+		<div id="loginform">
+			{% if session.username %}
+				<p>Hey</p>
+				<a href="/logout">Logout</a>
+				<a href="/upload">Upload Music</a>
+			{% else %}
+				<form action="/login" method="POST">
+					<p>Username<br>
+						<input type="text" name="username">
+					</p>
+					<p>Password<br>
+						<input type="text" name="password">
+						<input type="submit" value="Login">
+					</p>
+				</form>
+			{% endif %}
+		</div>
+		<div id="musiclist">
+			<h2>Available Sheet music</h2>
+			<p>Amount available: {{ count }}</p><hr>
+			{% for composition in compositions %}
+				<a href="/composition/{{ composition.id }}">{{ composition.title }}</a>
+			{% endfor %}
+		</div>
+	{% endblock %}

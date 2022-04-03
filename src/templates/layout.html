@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+	<title>ShakuArchive</title>
+	<link rel="stylesheet" href="{{url_for('static', filename='styles/general.css') }}">
+</head>
+<html>
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			<div class="messages">
+				{% for message in messages %}
+					<p class = "flash_message">{{ message }}</p>
+				{% endfor %}
+			</div>
+		{% endif %}
+	{% endwith %}
+	{% block body %}{% endblock %}
+</html>

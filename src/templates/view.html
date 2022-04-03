@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+	<h3>{{ music.title }}</h3>
+	<p>Composer: {{ music.composer }}</p>
+	<p>Genre: {{ music.genre }}</p>
+	<p>Notation type: {{ music.notation }}</p>
+	<p>Difficulty: {{ music.difficulty }}</p>
+	<p>Uploader: {{ music.uploader }}</p>
+	<p>Views: {{ music.views }}</p>
+	<a href="/delete/{{ music.filename }}">Delete</a><br>
+	<embed src="{{ upload_folder }}/{{ music.filename }}" width="800px" height="1150px" scrolling="auto" />
+{% endblock %}

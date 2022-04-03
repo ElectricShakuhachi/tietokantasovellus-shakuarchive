@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}
+	<form action="/uploader" method="POST" enctype="multipart/form-data">
+		<input type="file" name="file" accept=".pdf"/><br>
+		<p>Title</p><br>
+		<input type="text" name="title"><br>
+		<p>Composer</p><br>
+		<input type="text" name="composer"><br>
+		<p>Genre</p><br>
+		<input type="text" name="genre"><br>
+		<p>Notation Type</p><br>
+		<input type="text" name="notation"><br>
+		<p>Instrument count</p><br>
+		<input type="text" name="instrumentcount"><br>
+		<p>Difficulty</p><br>
+		<input type="radio" name="difficulty" value="1">
+		<input type="radio" name="difficulty" value="2">
+		<input type="radio" name="difficulty" value="3">
+		<input type="radio" name="difficulty" value="4">
+		<input type="radio" name="difficulty" value="5"><br>
+		<input type="submit" value="Send">
+	</form>
+{% endblock %}
