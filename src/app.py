@@ -12,7 +12,7 @@ ALLOWED_SHEET_TYPES = {"pdf"}
 ALLOWED_SOUND_TYPES = {"wav"}
 
 app = Flask(__name__, static_folder="./static")
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///ahaavist"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 db = SQLAlchemy(app)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.secret_key = os.getenv("SECRET_KEY")
