@@ -3,7 +3,7 @@
 		<div id="loginform">
 			{% if session.username %}
 				<p>Hey</p>
-				<a href="/logout">Logout</a>
+				<a href="/logout">Logout</a><br>
 				<a href="/upload">Upload Music</a>
 			{% else %}
 				<form action="/login" method="POST">
@@ -14,8 +14,8 @@
 						<input type="text" name="password">
 						<input type="submit" value="Login">
 					</p>
-					<a href="/signup">Sing Up</a>
 				</form>
+				<a href="/signup">Sing Up</a>
 			{% endif %}
 		</div>
 		<div id="musiclist">
