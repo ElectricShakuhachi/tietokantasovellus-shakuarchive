@@ -138,6 +138,7 @@ def signup():
     db.session.execute(sql, {"username":username, "password":hash_value})
     db.session.commit()
     flash("Singup succesful")
+    return redirect("/")
 
 @app.route("/logout")
 def logout():
