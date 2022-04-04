@@ -114,14 +114,16 @@ def login():
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if not user:
-        return "Invalid username or password"
+        flash("Invalid username or password")
+        return redirect("/")
     else:
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["username"] = username
             return redirect("/")
         else:
-            return "Invalid username or password"
+            flash("Invalid username or password")
+            return redirect("/")
 
 @app.route("/signup")
 def signup_page():
