@@ -73,7 +73,7 @@ def upload():
 def upload_file():
     if request.method == "POST":
         if "file" not in request.files:
-            flash("No file part")
+            flash("No file part", "error")
             return redirect(request.url)
         file = request.files["file"]
         if file and allowed_sheet(file.filename):
@@ -103,7 +103,7 @@ def upload_file():
             return redirect("/")
         else:
             print("Should be flashing...")
-            flash("Unsupported filetype")
+            flash("Unsupported filetype", "error")
             return redirect("/upload")
 
 @app.route("/login", methods=["POST"])
@@ -114,7 +114,7 @@ def login():
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if not user:
-        flash("Invalid username or password")
+        flash("Invalid username or password", "error")
         return redirect("/")
     else:
         hash_value = user.password
@@ -122,7 +122,7 @@ def login():
             session["username"] = username
             return redirect("/")
         else:
-            flash("Invalid username or password")
+            flash("Invalid username or password", "error")
             return redirect("/")
 
 @app.route("/signup")
@@ -137,7 +137,7 @@ def signup():
     sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
     db.session.execute(sql, {"username":username, "password":hash_value})
     db.session.commit()
-    return "Singup succesful"
+    flash("Singup succesful")
 
 @app.route("/logout")
 def logout():

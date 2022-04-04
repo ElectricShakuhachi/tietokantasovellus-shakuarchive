@@ -4,7 +4,16 @@
 	<link rel="stylesheet" href="{{url_for('static', filename='styles/general.css') }}">
 </head>
 <html>
-	{% with messages = get_flashed_messages() %}
+	{% with errors = get_flashed_messages(category_filter=["error"]) %}
+		{% if errors %}
+			<div class="errors">
+				{% for error in errors %}
+					<p class = "flash_message">{{ error }}</p>
+				{% endfor %}
+			</div>
+		{% endif %}
+	{% endwith %}
+	{% with messages = get_flashed_messages(category_filter=["message"]) %}
 		{% if messages %}
 			<div class="messages">
 				{% for message in messages %}
