@@ -4,6 +4,7 @@ from flask import Flask, flash, render_template, redirect, request, url_for, ses
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
+from string import ascii_lowercase, ascii_uppercase
 from uuid import uuid4
 
 load_dotenv()
@@ -111,7 +112,7 @@ def login():
     username = request.form["username"]
     password = request.form["password"]
     sql = "SELECT id, password FROM users WHERE username=:username"
-    result = db.session.execute(sql, {"username":username})
+    result = db.session.execute(sql, {"username": username})
     user = result.fetchone()
     if not user:
         flash("Invalid username or password", "error")
@@ -133,12 +134,38 @@ def signup_page():
 def signup():
     username = request.form["username"]
     password = request.form["password"]
+    if len(username) < 3:
+        flash("Username too short. Please use at least 3 characters", "error")
+        return redirect("signup")
+    rules = {"!#$%&()*+,-./:;<=>?@[\]^_`{|}~": False, ascii_uppercase: False, ascii_lowercase: False}
+    for letter in str(password):
+        for charlist in rules.keys():
+            if letter in charlist:
+                rules[charlist] = True
+    for compliance in rules.values():
+        if not compliance:
+            flash("Please use at least 8 characters and at least one number, \
+                at least one of both upper/lower case character and one special \
+                character from !#$%&()*+,-./:;<=>?@[\]^_`{|}~ in the password.", "error")
+            return redirect("/signup")
+    password_repeat = request.form["password_repeat"]
+    if password != password_repeat:
+        flash("Passwords do not match")
+        return redirect("/signup")
     hash_value = generate_password_hash(password)
-    sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
-    db.session.execute(sql, {"username":username, "password":hash_value})
-    db.session.commit()
-    flash("Singup succesful")
-    return redirect("/")
+    sql = "SELECT id FROM users WHERE username=:username"
+    result = db.session.execute(sql, {"username": username})
+    existing_user = result.fetchone()
+    if not existing_user:
+        sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
+        db.session.execute(sql, {"username":username, "password":hash_value})
+        db.session.commit()
+        flash("Singup succesful")
+        session["username"] = username
+        return redirect("/")
+    else:
+        flash("Username taken.", "error")
+        return redirect("/signup")
 
 @app.route("/logout")
 def logout():

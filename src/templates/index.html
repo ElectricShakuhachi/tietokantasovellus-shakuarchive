@@ -2,7 +2,7 @@
 	{% block body %}
 		<div id="loginform">
 			{% if session.username %}
-				<p>Hey</p>
+				<p>Logged in as {{ session.username }}</p>
 				<a href="/logout">Logout</a><br>
 				<a href="/upload">Upload Music</a>
 			{% else %}

@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
 	<form action="/signuper" method="POST">
-		<p>Username<br>
-			<input type="text" name="username">
-		</p>
-		<p>Password<br>
-			<input type="text" name="password">
-			<input type="submit" value="Signup">
-		</p>
+		<p>Username</p>
+		<input type="text" name="username">
+		<p>Password</p>
+		<input type="text" name="password">
+		<p>Password again</p>
+		<input type="text" name="password_repeat">
+		<input type="submit" value="Signup">
 	</form>
 {% endblock %}
