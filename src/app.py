@@ -92,12 +92,12 @@ def upload_file():
                 instrumentcount, views, notation) VALUES \
                 (:title, :filename, :difficulty, \
                 :composer, :genre, :uploader, \
-                :instrumentcount, 0, :notation)"
+                :instrumentcount, :views, :notation)"
             db.session.execute(sql, {"title":title,
             "filename":filename, "difficulty":difficulty,
             "composer":composer, "genre":genre,
             "uploader":uploader, "instrumentcount":instrument_count,
-            "notation":notation})
+            "notation":notation, "views":0})
             db.session.commit()
             flash("File uploaded succesfully")
             return redirect("/")
