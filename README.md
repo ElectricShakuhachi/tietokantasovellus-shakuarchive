@@ -17,4 +17,21 @@ The page has two types of users, regular and admin. Users with admin rights may 
 
 # Current Situation of Develoment:
 
-(placeholder)
+## For Intermediate Inspection 2:
+
+Currently the application provides the basic functionalities of being able to sign up, log in and out, view uploaded sheet music and metadata on them, and to upload if logged in.
+
+The address of the app in Heroku is:
+https://shakuarchive.herokuapp.com/
+
+Signing up, logging in and out are self explanatory.
+After creating and account and logging in, any pdf files (note: only pdf files accepted) can be uploaded from the form that opens by pressing "Upload Music"
+There are no specific checks toward what is filled in as information about the music, besides that Instrument count should be filled in with an integer value, even though it is currently implemented as a textbox.
+
+Uploaded files can be seen from links on front page.
+Currently anyone may delete uploaded files - this functionality will be restricted to admin users later.
+
+Currently pdf files are loaded to the site as static files, but they are planned to be stored in database as binary data later.
+
+Make note of if you will of the unfamiliar look of the example piece of sheet music uploaded... 
+It's traditional Japanese notation for shakuhachi flutes.
