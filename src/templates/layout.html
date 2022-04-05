@@ -4,23 +4,52 @@
 	<link rel="stylesheet" href="{{url_for('static', filename='styles/general.css') }}">
 </head>
 <html>
-	{% with errors = get_flashed_messages(category_filter=["error"]) %}
-		{% if errors %}
-			<div class="errors">
-				{% for error in errors %}
-					<p class = "flash_message">{{ error }}</p>
-				{% endfor %}
-			</div>
-		{% endif %}
-	{% endwith %}
-	{% with messages = get_flashed_messages(category_filter=["message"]) %}
-		{% if messages %}
-			<div class="messages">
-				{% for message in messages %}
-					<p class = "flash_message">{{ message }}</p>
-				{% endfor %}
-			</div>
-		{% endif %}
-	{% endwith %}
-	{% block body %}{% endblock %}
+	<div id="errors_and_messages">
+		{% with errors = get_flashed_messages(category_filter=["error"]) %}
+			{% if errors %}
+				<div id="errors">
+					{% for error in errors %}
+						<p class = "flash_message">{{ error }}</p>
+					{% endfor %}
+				</div>
+			{% endif %}
+		{% endwith %}
+		{% with messages = get_flashed_messages(category_filter=["message"]) %}
+			{% if messages %}
+				<div id="messages">
+					{% for message in messages %}
+						<p class = "flash_message">{{ message }}</p>
+					{% endfor %}
+				</div>
+			{% endif %}
+		{% endwith %}
+	</div>
+	<header>
+		<div id="loginform">
+			{% if session.username %}
+				<p>Logged in as {{ session.username }}</p>
+				<a href="/logout">Logout</a><br>
+			{% else %}
+				{% if request.path != "/signup" %}
+					<form action="/login" method="POST">
+						<label for="username">Username</label>
+						<input type="text" name="username">
+						<label for="password">Password</label>
+						<input type="text" name="password">
+						<input type="submit" value="Login">
+					</form><br>
+					<form action="/signup">
+						<input type="submit" value="Sign Up">
+					</form>
+				{% else %}
+					<h2>Sign Up</h2>
+				{% endif %}
+			{% endif %}
+		</div>
+		<h2 id="site-title">ShakuArchive - Aspiring for Accessibility to all Public Domain Honkyoku</h2>
+	</header>
+	<div class="body">
+	{% block body %}
+	{% endblock %}
+	</div>
 </html>

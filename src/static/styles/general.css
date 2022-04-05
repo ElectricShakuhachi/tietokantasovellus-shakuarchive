@@ -1,7 +1,38 @@
-.errors {
+header {
+	width:96%;
+	height: 195px;
+	background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../graphics/banner2.jpg");
+	padding: 20px;
+	padding-bottom: 25px;
+	border-radius: 11px;
+	margin: 10px;
+}
+
+#loginform {
+	padding: 20px;
+	width: 15%;
+	height: 85%;
+	background: rgb(210, 210, 210);
+	border-radius: 20px;
+	min-width: 220px;
+	float: left;
+}
+
+#errors {
 	color: red
 }
 
 .messages {
 	color: green
+}
+
+.body {
+	padding: 50px;
+}
+
+#site-title {
+	float: left;
+	margin-left: 85px;
+	margin-top: 85px;
+	color: yellow;
 }
