@@ -41,13 +41,11 @@ def download_from_aws_s3(filename, file_path):
         client = boto3.client("s3")
         bucket = os.getenv("S3_BUCKET")
         client.download_file(bucket, filename, file_path)
-        print("Download succesful")
-        sys.stdout.flush()
+        flash("Download succesful")
         return send_file(filename)
     except botocore.exceptions.ClientError as error:
-        print(error.response["Error"]["Code"])
-        print(error.response["Error"]["Message"])
-        sys.stdout.flush()
+        flash(error.response["Error"]["Code"], "error")
+        flash(error.response["Error"]["Message"], "error")
 
 @app.route("/")
 def index():
