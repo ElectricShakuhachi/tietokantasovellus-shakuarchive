@@ -1,4 +1,5 @@
 import os
+import sys
 import boto3
 import botocore
 from dotenv import load_dotenv
@@ -41,10 +42,12 @@ def download_from_aws_s3(filename, file_path):
         bucket = os.getenv("S3_BUCKET")
         client.download_file(bucket, filename, file_path)
         print("Download succesful")
+        sys.stdout.flush()
         return send_file(filename)
     except botocore.exceptions.ClientError as error:
         print(error.response["Error"]["Code"])
         print(error.response["Error"]["Message"])
+        sys.stdout.flush()
 
 @app.route("/")
 def index():
