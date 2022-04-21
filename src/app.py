@@ -1,6 +1,6 @@
 import os
 import boto3
-from boto3.session import Session
+import botocore
 from dotenv import load_dotenv
 from flask import Flask, flash, render_template, redirect, request, url_for, session, send_file
 from flask_sqlalchemy import SQLAlchemy
@@ -36,10 +36,14 @@ def upload_to_aws_s3(file, name):
     client.upload_fileobj(file, bucket, name)
 
 def download_from_aws_s3(filename, file_path):
-    client = boto3.client("s3")
-    bucket = os.getenv("S3_BUCKET")
-    client.download_file(bucket, filename, file_path)
-    return send_file(filename)
+    try:
+        client = boto3.client("s3")
+        bucket = os.getenv("S3_BUCKET")
+        client.download_file(bucket, filename, file_path)
+        return send_file(filename)
+    except botocore.exceptions.Clienterror as error:
+        print(error.response["Error"]["Code"])
+        print(error.response["Error"]["Message"])
 
 @app.route("/")
 def index():
