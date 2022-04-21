@@ -47,3 +47,4 @@ TODO:
 - has to have between 5-10 tables
 - monta -moneen taulu ainakin yksi
 - yksi moneen kannattaa viitata viiteavaimella
+
