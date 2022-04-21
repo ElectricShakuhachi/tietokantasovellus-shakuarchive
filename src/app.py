@@ -35,10 +35,10 @@ def upload_to_aws_s3(file, name):
     bucket = os.getenv("S3_BUCKET")
     client.upload_fileobj(file, bucket, name)
 
-def download_from_aws_s3(filename):
+def download_from_aws_s3(filename, file_path):
     client = boto3.client("s3")
     bucket = os.getenv("S3_BUCKET")
-    client.download_file(bucket, filename, filename)
+    client.download_file(bucket, filename, file_path)
     return send_file(filename)
 
 @app.route("/")
@@ -58,13 +58,14 @@ def view_music(id):
     upload_folder = app.config["UPLOAD_FOLDER"]
     return render_template("view.html", music=music, upload_folder=upload_folder)
 
-@app.route("/<filename>", methods=["GET"])
+@app.route(app.config['UPLOAD_FOLDER'] + "/<filename>", methods=["GET"])
 def get_pdf(filename):
     sql = "SELECT id FROM compositions WHERE filename=(:filename)"
     result = db.session.execute(sql, {"filename":filename})
     music = result.fetchone()
     if music:
-        file = download_from_aws_s3(filename)
+        file_path = app.config['UPLOAD_FOLDER'] + "/" + filename
+        file = download_from_aws_s3(filename, file_path)
         return send_file(file)
 
 @app.route("/delete/<filename>")
