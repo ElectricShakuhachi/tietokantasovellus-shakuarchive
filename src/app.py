@@ -62,6 +62,7 @@ def view_music(id):
     result = db.session.execute(sql, {"id":id})
     music = result.fetchone()
     upload_folder = app.config["UPLOAD_FOLDER"]
+    flash(f"Looking for {music.filename}")
     return render_template("view.html", music=music, upload_folder=upload_folder)
 
 @app.route(app.config['UPLOAD_FOLDER'] + "/<filename>", methods=["GET"])
@@ -70,6 +71,7 @@ def get_pdf(filename):
     result = db.session.execute(sql, {"filename":filename})
     music = result.fetchone()
     if music:
+        flash(f"Music {filename} found")
         file_path = app.config['UPLOAD_FOLDER'] + "/" + filename
         file = download_from_aws_s3(filename, file_path)
         return send_file(file)
