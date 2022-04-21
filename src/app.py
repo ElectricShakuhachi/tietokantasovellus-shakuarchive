@@ -1,4 +1,6 @@
 import os
+import boto3
+from boto3.session import Session
 from dotenv import load_dotenv
 from flask import Flask, flash, render_template, redirect, request, url_for, session, send_file
 from flask_sqlalchemy import SQLAlchemy
@@ -25,8 +27,18 @@ def prepend_id(filename):
 def allowed_sheet(filename):
     return '.' in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_SHEET_TYPES
 
-def allowed_shoud(filename):
+def allowed_sound(filename):
     return '.' in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_SOUND_TYPES
+
+def upload_to_aws_s3(file, name):
+    client = boto3.client("s3")
+    bucket = os.getenv("S3_BUCKET")
+    client.upload_fileobj(file, bucket, name)
+
+def download_from_aws_s3(filename):
+    client = boto3.client("s3")
+    bucket = os.getenv("S3_BUCKET")
+    return client.Object(bucket, filename).get()['Body'].read()
 
 @app.route("/")
 def index():
@@ -45,14 +57,14 @@ def view_music(id):
     upload_folder = app.config["UPLOAD_FOLDER"]
     return render_template("view.html", music=music, upload_folder=upload_folder)
 
-@app.route(app.config['UPLOAD_FOLDER'] + "/<filename>", methods=["GET"])
+@app.route("/<filename>", methods=["GET"])
 def get_pdf(filename):
     sql = "SELECT id FROM compositions WHERE filename=(:filename)"
     result = db.session.execute(sql, {"filename":filename})
     music = result.fetchone()
     if music:
-        file_path = app.config['UPLOAD_FOLDER'] + "/" + filename
-        return send_file(file_path)
+        file = download_from_aws_s3(filename)
+        return send_file(file)
 
 @app.route("/delete/<filename>")
 def delete_file(filename):
@@ -74,12 +86,13 @@ def upload():
 def upload_file():
     if request.method == "POST":
         if "file" not in request.files:
-            flash("No file part", "error")
+            flash("No file submitted", "error")
             return redirect(request.url)
         file = request.files["file"]
         if file and allowed_sheet(file.filename):
             filename = secure_filename(prepend_id(file.filename))
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            upload_to_aws_s3(file, filename)
+            #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             uploader = session["username"]
             title = request.form["title"]
             composer = request.form["composer"]
@@ -103,7 +116,6 @@ def upload_file():
             flash("File uploaded succesfully")
             return redirect("/")
         else:
-            print("Should be flashing...")
             flash("Unsupported filetype", "error")
             return redirect("/upload")
 
