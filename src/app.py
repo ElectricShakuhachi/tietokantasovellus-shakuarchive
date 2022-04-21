@@ -73,6 +73,8 @@ def get_pdf(filename):
         file_path = app.config['UPLOAD_FOLDER'] + "/" + filename
         file = download_from_aws_s3(filename, file_path)
         return send_file(file)
+    else:
+        flash(f"Music {filename} not found", "error")
 
 @app.route("/delete/<filename>")
 def delete_file(filename):
