@@ -43,9 +43,12 @@ def download_from_aws_s3(filename, file_path):
         client.download_file(bucket, filename, file_path)
         flash("Download succesful")
         return send_file(filename)
-    except botocore.exceptions.ClientError as error:
-        flash(error.response["Error"]["Code"], "error")
-        flash(error.response["Error"]["Message"], "error")
+    except:
+        flash("Error", "error")
+    # except botocore.exceptions.ClientError as error:
+    #     flash("Problems", "error")
+    #     flash(error.response["Error"]["Code"], "error")
+    #     flash(error.response["Error"]["Message"], "error")
 
 @app.route("/")
 def index():
