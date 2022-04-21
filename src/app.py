@@ -41,7 +41,7 @@ def download_from_aws_s3(filename, file_path):
         bucket = os.getenv("S3_BUCKET")
         client.download_file(bucket, filename, file_path)
         return send_file(filename)
-    except botocore.exceptions.Clienterror as error:
+    except botocore.exceptions.ClientError as error:
         print(error.response["Error"]["Code"])
         print(error.response["Error"]["Message"])
 
