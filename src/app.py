@@ -38,7 +38,7 @@ def upload_to_aws_s3(file, name):
 def download_from_aws_s3(filename):
     client = boto3.client("s3")
     bucket = os.getenv("S3_BUCKET")
-    return client.Object(bucket, filename).get()['Body'].read()
+    client.download_file(bucket, filename, filename)
 
 @app.route("/")
 def index():
