@@ -37,11 +37,12 @@ def upload_to_aws_s3(file, name):
     client.upload_fileobj(file, bucket, name)
 
 def download_from_aws_s3(filename, file_path):
-    client = boto3.client("s3")
-    bucket = os.getenv("S3_BUCKET")
-    client.download_file(bucket, filename, file_path)
     try:
-        return send_file(file_path)
+        client = boto3.client("s3")
+        bucket = os.getenv("S3_BUCKET")
+        client.download_file(bucket, filename, file_path)
+        flash("Download succesful")
+        return file_path
     except Exception as e:
         flash(f"Error at download:  {e}", "error")
         flash(f"Tried to load {filename} to {file_path}")
