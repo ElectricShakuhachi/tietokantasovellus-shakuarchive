@@ -42,7 +42,7 @@ def download_from_aws_s3(filename, file_path):
         bucket = os.getenv("S3_BUCKET")
         client.download_file(bucket, filename, file_path)
         flash("Download succesful")
-        return send_file(filename)
+        return send_file(file_path)
     except Exception as e:
         flash(f"Error at download:  {e}", "error")
         flash(f"Tried to load {filename} to {file_path}")
