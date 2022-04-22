@@ -8,6 +8,6 @@
 	<p>Uploader: {{ music.uploader }}</p>
 	<p>Views: {{ music.views }}</p>
 	<a href="/delete/{{ music.filename }}">Delete</a><br><br>
-	<embed src="{{ upload_folder }}/{{ music.filename }}" width="800px" height="1150px" scrolling="auto" />
+	<embed src="{{ upload_folder }}/{{ music.filename }}" width="800px" height="1150px" scrolling="auto" /><br><br>
 	<a href="/">Home Page</a>
 {% endblock %}
