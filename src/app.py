@@ -49,7 +49,7 @@ def download_from_aws_s3(filename, file_path):
 def delete_from_aws_s3(filename):
     client = boto3.client("s3")
     bucket = os.getenv("S3_BUCKET")
-    client.delete_object(bucket, filename)
+    client.delete_object(Bucket=bucket, Key=filename)
 
 @app.route("/")
 def index():
@@ -185,7 +185,7 @@ def signup():
         sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
         db.session.execute(sql, {"username":username, "password":hash_value})
         db.session.commit()
-        flash("Singup succesful")
+        flash("Signup succesful")
         session["username"] = username
         return redirect("/")
     else:
