@@ -41,15 +41,15 @@ def download_from_aws_s3(filename, file_path):
         client = boto3.client("s3")
         bucket = os.getenv("S3_BUCKET")
         client.download_file(bucket, filename, file_path)
-        flash("Download succesful")
         return file_path
     except Exception as e:
-        flash(f"Error at download:  {e}", "error")
-        flash(f"Tried to load {filename} to {file_path}")
-    # except botocore.exceptions.ClientError as error:
-    #     flash("Problems", "error")
-    #     flash(error.response["Error"]["Code"], "error")
-    #     flash(error.response["Error"]["Message"], "error")
+        print(f"Error at download:  {e}", "error")
+        print(f"Tried to load {filename} to {file_path}")
+
+def delete_from_aws_s3(filename):
+    client = boto3.client("s3")
+    bucket = os.getenv("S3_BUCKET")
+    client.delete_object(bucket, filename)
 
 @app.route("/")
 def index():
@@ -66,7 +66,6 @@ def view_music(id):
     result = db.session.execute(sql, {"id":id})
     music = result.fetchone()
     upload_folder = app.config["UPLOAD_FOLDER"]
-    flash(f"Looking for {music.filename}")
     return render_template("view.html", music=music, upload_folder=upload_folder)
 
 @app.route(app.config['UPLOAD_FOLDER'] + "/<filename>", methods=["GET"])
@@ -75,19 +74,18 @@ def get_pdf(filename):
     result = db.session.execute(sql, {"filename":filename})
     music = result.fetchone()
     if music:
-        flash(f"Music {filename} found")
         file_path = app.config['UPLOAD_FOLDER'] + "/" + filename
         file = download_from_aws_s3(filename, file_path)
         return send_file(file)
     else:
-        flash(f"Music {filename} not found", "error")
+        print(f"Music {filename} not found", "error")
 
 @app.route("/delete/<filename>")
 def delete_file(filename):
     sql = "DELETE FROM compositions WHERE filename=(:filename)"
     db.session.execute(sql, {"filename":filename})
     db.session.commit()
-    os.remove(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+    delete_from_aws_s3(filename)
     return redirect("/")
 
 @app.route("/guide")
@@ -108,7 +106,6 @@ def upload_file():
         if file and allowed_sheet(file.filename):
             filename = secure_filename(prepend_id(file.filename))
             upload_to_aws_s3(file, filename)
-            #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             uploader = session["username"]
             title = request.form["title"]
             composer = request.form["composer"]
