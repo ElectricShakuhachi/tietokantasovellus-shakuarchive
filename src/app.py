@@ -45,6 +45,7 @@ def download_from_aws_s3(filename, file_path):
         return send_file(filename)
     except Exception as e:
         flash(f"Error at download:  {e}", "error")
+        flash(f"Tried to load {filename} to {file_path}")
     # except botocore.exceptions.ClientError as error:
     #     flash("Problems", "error")
     #     flash(error.response["Error"]["Code"], "error")
