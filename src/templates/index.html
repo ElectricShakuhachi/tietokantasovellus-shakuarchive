@@ -8,8 +8,25 @@
 		<div id="musiclist">
 			<h2>Available Sheet music</h2>
 			<p>Amount available: {{ count }}</p><hr>
-			{% for composition in compositions %}
-				<a href="/composition/{{ composition.id }}">{{ composition.title }}</a>
-			{% endfor %}
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Composer</th>
+					<th>Genre</th>
+					<th>Notation type</th>
+					<th>Difficulty</th>
+					<th>Views</th>
+				</tr>
+				{% for composition in compositions %}
+					<tr>
+						<th><a href="/composition/{{ composition.id }}">{{ composition.title }}</a></th>
+						<th>{{ composition.composer }}</th>
+						<th>{{ composition.genre }}</th>
+						<th>{{ composition.notation }}</th>
+						<th>{{ composition.difficulty }}</th>
+						<th>{{ composition.views }}</th>
+					</tr>
+				{% endfor %}
+			</table>
 		</div>
 	{% endblock %}

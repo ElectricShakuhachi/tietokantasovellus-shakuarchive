@@ -53,7 +53,7 @@ def delete_from_aws_s3(filename):
 
 @app.route("/")
 def index():
-    result = db.session.execute("SELECT id, title FROM compositions")
+    result = db.session.execute("SELECT id, title, composer, genre, notation, difficulty, views FROM compositions")
     compositions = result.fetchall()
     return render_template("index.html", count=len(compositions), compositions=compositions)
 
