@@ -35,16 +35,3 @@ Currently pdf files are loaded to the site as static files, but they are planned
 
 Make note of if you will of the unfamiliar look of the example piece of sheet music uploaded... 
 It's traditional Japanese notation for shakuhachi flutes.
-
-# NOTES - remove!
-
-Now getting internal server error when pressing remove -> but it does remove
-
-TODO:
-
-- make results listable by any category
-- make it possible for users to note what they are working on - so that people may know who to contact for hints and so on
-- has to have between 5-10 tables
-- monta -moneen taulu ainakin yksi
-- yksi moneen kannattaa viitata viiteavaimella
-
