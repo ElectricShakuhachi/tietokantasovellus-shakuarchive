@@ -53,14 +53,14 @@ def delete_from_aws_s3(filename):
 
 @app.route("/")
 def index():
-    sql = """SELECT c.id as id, c.title AS title, 
-            c.composer AS composer, c.views AS views,
-            g.genre AS genre, c.notation AS NOTATION,
-            AVG(d.difficulty) AS difficulty,
-            AVG(r.rating) AS rating 
-            FROM compositions c, ratings r, genres g,
-            difficultyratings d 
-            WHERE r.song_id=c.id AND d.song_id=c.id and g.song_id=c.id 
+    sql = "SELECT c.id as id, c.title AS title, \
+            c.composer AS composer, c.views AS views, \
+            g.genre AS genre, c.notation AS NOTATION, \
+            AVG(d.difficulty) AS difficulty, \
+            AVG(r.rating) AS rating \
+            FROM compositions c, ratings r, genres g, \
+            difficultyratings d \
+            WHERE r.song_id=c.id AND d.song_id=c.id and g.song_id=c.id \
             GROUP BY c.id"
     result = db.session.execute(sql)
     compositions = result.fetchall()
@@ -120,15 +120,14 @@ def upload_file():
             composer = request.form["composer"]
             instrument_count = request.form["instrumentcount"]
             notation = request.form["notation"]
-            sql = """INSERT INTO compositions 
-                (title, filename, composer,
-                instrumentcount, views,
-                notation, user_id) VALUES 
-                (:title, :filename, :composer, 
-                :instrumentcount, :views,
-                :notation, :user_id); 
-                INSERT INTO 
-                """
+            sql = "INSERT INTO compositions \
+                (title, filename, composer, \
+                instrumentcount, views, \
+                notation, user_id) VALUES \
+                (:title, :filename, :composer, \
+                :instrumentcount, :views, \
+                :notation, :user_id); \
+                INSERT INTO"#################################################
             db.session.execute(sql, {"title":title,
             "filename":filename, "composer":composer,
             "instrumentcount":instrument_count, "views":0,
