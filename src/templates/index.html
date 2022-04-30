@@ -10,11 +10,12 @@
 			<p>Amount available: {{ count }}</p><hr>
 			<table>
 				<tr>
-					<th>Name</th>
+					<th>Title</th>
 					<th>Composer</th>
 					<th>Genre</th>
 					<th>Notation type</th>
 					<th>Difficulty</th>
+					<th>Rating</th>
 					<th>Views</th>
 				</tr>
 				{% for composition in compositions %}
@@ -24,6 +25,7 @@
 						<th>{{ composition.genre }}</th>
 						<th>{{ composition.notation }}</th>
 						<th>{{ composition.difficulty }}</th>
+						<th>{{ composition.rating }}</th>
 						<th>{{ composition.views }}</th>
 					</tr>
 				{% endfor %}

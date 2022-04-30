@@ -53,7 +53,8 @@ def delete_from_aws_s3(filename):
 
 @app.route("/")
 def index():
-    result = db.session.execute("SELECT id, title, composer, genre, notation, difficulty, views FROM compositions")
+    sql = "SELECT c.id as id, c.title AS title, c.composer AS composer, c.views AS views, TOP 1 g.genre AS genre, c.notation AS NOTATION, AVG(d.difficuly) AS difficulty, AVG(r.rating) AS rating FROM compositions c, ratings r, genres g, difficultyratings d WHERE r.song_id=c.id AND d.song_id=c.id and g.song_id=c.id"
+    result = db.session.execute(sql)
     compositions = result.fetchall()
     return render_template("index.html", count=len(compositions), compositions=compositions)
 
@@ -106,25 +107,24 @@ def upload_file():
         if file and allowed_sheet(file.filename):
             filename = secure_filename(prepend_id(file.filename))
             upload_to_aws_s3(file, filename)
-            uploader = session["username"]
+            user_id = session["user_id"]
             title = request.form["title"]
             composer = request.form["composer"]
-            difficulty = request.form["difficulty"]
-            genre = request.form["genre"]
             instrument_count = request.form["instrumentcount"]
             notation = request.form["notation"]
-            sql = "INSERT INTO compositions \
-                (title, filename, difficulty, \
-                composer, genre, uploader, \
-                instrumentcount, views, notation) VALUES \
-                (:title, :filename, :difficulty, \
-                :composer, :genre, :uploader, \
-                :instrumentcount, :views, :notation)"
+            sql = """INSERT INTO compositions 
+                (title, filename, composer,
+                instrumentcount, views,
+                notation, user_id) VALUES 
+                (:title, :filename, :composer, 
+                :instrumentcount, :views,
+                :notation, :user_id); 
+                INSERT INTO 
+                """
             db.session.execute(sql, {"title":title,
-            "filename":filename, "difficulty":difficulty,
-            "composer":composer, "genre":genre,
-            "uploader":uploader, "instrumentcount":instrument_count,
-            "notation":notation, "views":0})
+            "filename":filename, "composer":composer,
+            "instrumentcount":instrument_count, "views":0,
+            "notation":notation, "user_id":user_id})
             db.session.commit()
             flash("File uploaded succesfully")
             return redirect("/")
@@ -145,7 +145,7 @@ def login():
     else:
         hash_value = user.password
         if check_password_hash(hash_value, password):
-            session["username"] = username
+            session["user_id"] = user["id"]
             return redirect("/")
         else:
             flash("Invalid username or password", "error")
@@ -185,8 +185,11 @@ def signup():
         sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
         db.session.execute(sql, {"username":username, "password":hash_value})
         db.session.commit()
+        sql = "SELECT id FROM users WHERE username=:username"
+        result = db.session.execute(sql, {"username":username})
+        id = result.fetchone()
         flash("Signup succesful")
-        session["username"] = username
+        session["user_id"] = id
         return redirect("/")
     else:
         flash("Username taken.", "error")
