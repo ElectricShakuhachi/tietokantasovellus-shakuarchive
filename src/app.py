@@ -140,7 +140,7 @@ def upload_file():
             sql = "INSERT INTO ratings (song_id, rating, user_id) \
                 VALUES (lastval(), :rating, :user_id)"
             db.session.execute(sql, {"rating":rating, "user_id":user_id})
-            sql = "INSERT INTO difficultyratings (song_id, difficulty, user_id \
+            sql = "INSERT INTO difficultyratings (song_id, difficulty, user_id) \
                 VALUES (lastval(), :difficulty, :user_id"
             db.session.execute(sql, {"difficulty":difficulty, "user_id":user_id})
             db.session.commit()
