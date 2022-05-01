@@ -12,11 +12,6 @@ CREATE TABLE compositions (
 	instrumentcount INTEGER,
 	views INTEGER,
 	notation TEXT,
-	user_id INTEGER REFERENCES users
-);
-
-CREATE TABLE genres (
-	song_id INTEGER REFERENCES compositions,
 	genre TEXT,
 	user_id INTEGER REFERENCES users
 );

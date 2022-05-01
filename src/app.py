@@ -55,12 +55,12 @@ def delete_from_aws_s3(filename):
 def index():
     sql = "SELECT c.id as id, c.title AS title, \
             c.composer AS composer, c.views AS views, \
-            g.genre AS genre, c.notation AS NOTATION, \
+            c.genre AS genre, c.notation AS NOTATION, \
             AVG(d.difficulty) AS difficulty, \
             AVG(r.rating) AS rating \
-            FROM compositions c, ratings r, genres g, \
+            FROM compositions c, ratings r, \
             difficultyratings d \
-            WHERE r.song_id=c.id AND d.song_id=c.id and g.song_id=c.id \
+            WHERE r.song_id=c.id AND d.song_id=c.id \
             GROUP BY c.id"
     result = db.session.execute(sql)
     compositions = result.fetchall()
