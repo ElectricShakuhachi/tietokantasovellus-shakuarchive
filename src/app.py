@@ -120,18 +120,18 @@ def upload_file():
             composer = request.form["composer"]
             instrument_count = request.form["instrumentcount"]
             notation = request.form["notation"]
+            genre = request.form["genre"]
             sql = "INSERT INTO compositions \
                 (title, filename, composer, \
                 instrumentcount, views, \
-                notation, user_id) VALUES \
+                notation, genre, user_id) VALUES \
                 (:title, :filename, :composer, \
                 :instrumentcount, :views, \
-                :notation, :user_id); \
-                INSERT INTO"#################################################
+                :notation, :genre, :user_id)"
             db.session.execute(sql, {"title":title,
             "filename":filename, "composer":composer,
             "instrumentcount":instrument_count, "views":0,
-            "notation":notation, "user_id":user_id})
+            "notation":notation, "genre":genre, "user_id":user_id})
             db.session.commit()
             flash("File uploaded succesfully")
             return redirect("/")
