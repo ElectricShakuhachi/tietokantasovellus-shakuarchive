@@ -24,8 +24,8 @@
 						<th>{{ composition.composer }}</th>
 						<th>{{ composition.genre }}</th>
 						<th>{{ composition.notation }}</th>
-						<th>{{ composition.difficulty }}</th>
-						<th>{{ composition.rating }}</th>
+						<th>{{'%0.2f' % composition.difficulty }}</th>
+						<th>{{'%0.2f' %  composition.rating }}</th>
 						<th>{{ composition.views }}</th>
 					</tr>
 				{% endfor %}
