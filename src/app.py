@@ -117,8 +117,7 @@ def upload_file():
             upload_to_aws_s3(file, filename)
             username = session["username"]
             id_fetch = db.session.execute("SELECT id FROM users WHERE username=:username", {"username":username})
-            user_id = id_fetch.fetchone()
-            flash(f"User id = {user_id}")
+            user_id = id_fetch.fetchone()[0]
             title = request.form["title"]
             composer = request.form["composer"]
             instrument_count = request.form["instrumentcount"]
@@ -197,7 +196,6 @@ def signup():
         db.session.commit()
         sql = "SELECT id FROM users WHERE username=:username"
         result = db.session.execute(sql, {"username":username})
-        id = result.fetchone()
         flash("Signup succesful")
         session["username"] = username
         return redirect("/")
