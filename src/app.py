@@ -115,7 +115,10 @@ def upload_file():
         if file and allowed_sheet(file.filename):
             filename = secure_filename(prepend_id(file.filename))
             upload_to_aws_s3(file, filename)
-            user_id = session["id"]
+            username = session["username"]
+            id_fetch = db.session.execute("SELECT id FROM users WHERE username=:username", {"username":username})
+            user_id = id_fetch.fetchone()
+            flash(f"User id = {user_id}")
             title = request.form["title"]
             composer = request.form["composer"]
             instrument_count = request.form["instrumentcount"]
@@ -152,7 +155,7 @@ def login():
     else:
         hash_value = user.password
         if check_password_hash(hash_value, password):
-            session["id"] = user["id"]
+            session["username"] = user["username"]
             return redirect("/")
         else:
             flash("Invalid username or password", "error")
@@ -196,7 +199,7 @@ def signup():
         result = db.session.execute(sql, {"username":username})
         id = result.fetchone()
         flash("Signup succesful")
-        session["id"] = id
+        session["username"] = username
         return redirect("/")
     else:
         flash("Username taken.", "error")
@@ -204,5 +207,5 @@ def signup():
 
 @app.route("/logout")
 def logout():
-    del session["id"]
+    del session["username"]
     return redirect("/")
