@@ -121,11 +121,11 @@ def upload_file():
             user_id = id_fetch.fetchone()[0]
             title = request.form["title"]
             composer = request.form["composer"]
-            instrument_count = request.form["instrumentcount"]
+            instrument_count = int(request.form["instrumentcount"])
             notation = request.form["notation"]
             genre = request.form["genre"]
-            rating = request.form["rating"]
-            difficulty = request.form["difficulty"]
+            rating = int(request.form["rating"])
+            difficulty = int(request.form["difficulty"])
             sql = "INSERT INTO compositions \
                 (title, filename, composer, \
                 instrumentcount, views, \
@@ -141,7 +141,7 @@ def upload_file():
                 VALUES (lastval(), :rating, :user_id)"
             db.session.execute(sql, {"rating":rating, "user_id":user_id})
             sql = "INSERT INTO difficultyratings (song_id, difficulty, user_id) \
-                VALUES (lastval(), :difficulty, :user_id"
+                VALUES (lastval(), :difficulty, :user_id)"
             db.session.execute(sql, {"difficulty":difficulty, "user_id":user_id})
             db.session.commit()
             flash("File uploaded succesfully")
