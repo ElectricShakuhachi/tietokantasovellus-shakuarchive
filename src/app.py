@@ -55,7 +55,7 @@ def delete_from_aws_s3(filename):
 def index():
     sql = "SELECT c.id as id, c.title AS title, \
             c.composer AS composer, c.views AS views, \
-            c.genre AS genre, c.notation AS NOTATION, \
+            c.genre AS genre, c.notation AS notation, \
             AVG(d.difficulty) AS difficulty, \
             AVG(r.rating) AS rating \
             FROM compositions c, ratings r, \
@@ -124,6 +124,8 @@ def upload_file():
             instrument_count = request.form["instrumentcount"]
             notation = request.form["notation"]
             genre = request.form["genre"]
+            rating = request.form["rating"]
+            difficulty = request.form["difficulty"]
             sql = "INSERT INTO compositions \
                 (title, filename, composer, \
                 instrumentcount, views, \
@@ -135,6 +137,12 @@ def upload_file():
             "filename":filename, "composer":composer,
             "instrumentcount":instrument_count, "views":0,
             "notation":notation, "genre":genre, "user_id":user_id})
+            sql = "INSERT INTO ratings (song_id, rating, user_id) \
+                VALUES (lastval(), :rating, :user_id)"
+            db.session.execute(sql, {"rating":rating, "user_id":user_id})
+            sql = "INSERT INTO difficultyratings (song_id, difficulty, user_id \
+                VALUES (lastval(), :difficulty, :user_id"
+            db.session.execute(sql, {"difficulty":difficulty, "user_id":user_id})
             db.session.commit()
             flash("File uploaded succesfully")
             return redirect("/")
