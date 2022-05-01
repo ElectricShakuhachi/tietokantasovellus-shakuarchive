@@ -64,6 +64,7 @@ def index():
             GROUP BY c.id"
     result = db.session.execute(sql)
     compositions = result.fetchall()
+    flash(f"{compositions}")
     return render_template("index.html", count=len(compositions), compositions=compositions)
 
 @app.route("/composition/<int:id>", methods=["GET"])
