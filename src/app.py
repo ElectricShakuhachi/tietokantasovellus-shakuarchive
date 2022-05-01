@@ -110,7 +110,7 @@ def upload_file():
     if request.method == "POST":
         if "file" not in request.files:
             flash("No file submitted", "error")
-            return redirect(request.url)
+            return redirect("/upload")
         file = request.files["file"]
         if file and allowed_sheet(file.filename):
             filename = secure_filename(prepend_id(file.filename))
