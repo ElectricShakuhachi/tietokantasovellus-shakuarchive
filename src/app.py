@@ -219,7 +219,7 @@ def signup():
         flash("Username taken.", "error")
         return redirect("/signup")
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
