@@ -1,7 +1,5 @@
 import os
-import sys
 import boto3
-import botocore
 from dotenv import load_dotenv
 from flask import Flask, flash, render_template, redirect, request, url_for, session, send_file, abort
 from flask_sqlalchemy import SQLAlchemy
@@ -9,6 +7,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from string import ascii_lowercase, ascii_uppercase
 from uuid import uuid4
+from secrets import token_hex
 
 load_dotenv()
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "files")
@@ -156,8 +155,6 @@ def upload_file():
 
 @app.route("/login", methods=["POST"])
 def login():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
     username = request.form["username"]
     password = request.form["password"]
     sql = "SELECT id, password FROM users WHERE username=:username"
@@ -170,6 +167,7 @@ def login():
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["username"] = user["username"]
+            session["csrf_token"] = token_hex(16)
             return redirect("/")
         else:
             flash("Invalid username or password", "error")
@@ -181,8 +179,6 @@ def signup_page():
 
 @app.route("/signuper", methods=["POST"])
 def signup():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
     username = request.form["username"]
     password = request.form["password"]
     if len(username) < 3:
@@ -215,6 +211,7 @@ def signup():
         result = db.session.execute(sql, {"username":username})
         flash("Signup succesful")
         session["username"] = username
+        session["csrf_token"] = token_hex(16)
         return redirect("/")
     else:
         flash("Username taken.", "error")
