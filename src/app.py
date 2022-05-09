@@ -3,7 +3,7 @@ import sys
 import boto3
 import botocore
 from dotenv import load_dotenv
-from flask import Flask, flash, render_template, redirect, request, url_for, session, send_file
+from flask import Flask, flash, render_template, redirect, request, url_for, session, send_file, abort
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -92,6 +92,8 @@ def get_pdf(filename):
 
 @app.route("/delete/<filename>")
 def delete_file(filename):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     sql = "DELETE FROM compositions WHERE filename=(:filename)"
     db.session.execute(sql, {"filename":filename})
     db.session.commit()
@@ -109,6 +111,8 @@ def upload():
 @app.route("/uploader", methods=["GET", "POST"])
 def upload_file():
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         if "file" not in request.files:
             flash("No file submitted", "error")
             return redirect("/upload")
@@ -152,6 +156,8 @@ def upload_file():
 
 @app.route("/login", methods=["POST"])
 def login():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     username = request.form["username"]
     password = request.form["password"]
     sql = "SELECT id, password FROM users WHERE username=:username"
@@ -175,6 +181,8 @@ def signup_page():
 
 @app.route("/signuper", methods=["POST"])
 def signup():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     username = request.form["username"]
     password = request.form["password"]
     if len(username) < 3:
@@ -214,5 +222,7 @@ def signup():
 
 @app.route("/logout")
 def logout():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     del session["username"]
     return redirect("/")

@@ -34,6 +34,7 @@
 		<label for="rate4">4</label>
 		<input id="rate5" type="radio" name="rating" value="5">
 		<label for="rate5">5</label><br><br>
+		<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
 		<input type="submit" value="Send">
 	</form><br><br>
 	<a href="/">Home Page</a>

@@ -7,7 +7,10 @@
 	<p>Difficulty: {{ music.difficulty }}</p>
 	<p>Uploader: {{ music.uploader }}</p>
 	<p>Views: {{ music.views }}</p>
-	<a href="/delete/{{ music.filename }}">Delete</a><br><br>
+	<form action="/delete/{{ music.filename }}" method="POST" enctype="multipart/form-data">
+		<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
+		<input type="submit" value="Delete">
+	</form>
 	<embed src="{{ upload_folder }}/{{ music.filename }}" width="800px" height="1150px" scrolling="auto" /><br><br>
 	<a href="/">Home Page</a>
 {% endblock %}

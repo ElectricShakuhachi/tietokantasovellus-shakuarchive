@@ -28,14 +28,17 @@
 		<div id="loginform">
 			{% if session.username %}
 				<p>Logged in as {{ session.username }}</p>
-				<a href="/logout">Logout</a><br>
+				<form action="/logout" method="POST" enctype="multipart/form-data">
+					<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
+				</form>
 			{% else %}
 				{% if request.path != "/signup" %}
-					<form action="/login" method="POST">
+					<form action="/login" method="POST" enctype="multipart/form-data">
 						<label for="username">Username</label>
 						<input type="text" name="username">
 						<label for="password">Password</label>
 						<input type="password" name="password">
+						<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 						<input type="submit" value="Login">
 					</form><br>
 					<form action="/signup">
