@@ -209,7 +209,7 @@ def signup():
         sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
         db.session.execute(sql, {"username":username, "password":hash_value})
         db.session.commit()
-        sql = "SELECT id FROM users WHERE username=:username"
+        sql = "SELECT username FROM users WHERE username=:username"
         result = db.session.execute(sql, {"username":username})
         flash("Signup succesful")
         session["username"] = username
