@@ -52,6 +52,9 @@ def delete_from_aws_s3(filename):
 
 @app.route("/")
 def index():
+    if "csrf_token" not in session and "username" in session:
+        del session["username"]
+        return redirect("/")
     sql = "SELECT c.id as id, c.title AS title, \
             c.composer AS composer, c.views AS views, \
             c.genre AS genre, c.notation AS notation, \
