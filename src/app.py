@@ -131,7 +131,7 @@ def add_notes(id):
     sql = "INSERT INTO notes (song_id, note, user_id) VALUES (:song_id, :note, :user_id)"
     db.session.execute(sql, {"song_id": id, "note": stripped_notes, "user_id": user_id})
     db.session.commit()
-    return redirect("/composition/" + request.form["song_id"])
+    return redirect("/composition/" + id)
 
 @app.route("/guide")
 def guide():
