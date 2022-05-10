@@ -75,7 +75,7 @@ def view_music(id):
     db.session.commit()
     sql = "SELECT c.title AS title, c.composer AS composer, \
         c.views as views, c.genre AS genre, c.notation AS notation, \
-        AFG(r.rating) AS rating, AFG(d.difficulty) AS difficulty, \
+        AVG(r.rating) AS rating, AVG(d.difficulty) AS difficulty, \
         u.username as uploader, c.filename as filename FROM \
         compositions c, ratings r, difficultyratings d, users u \
         WHERE r.song_id=c.id AND d.song_id=c.id AND c.user_id=u.id \
