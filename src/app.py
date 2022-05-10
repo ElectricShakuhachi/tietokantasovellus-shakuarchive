@@ -100,7 +100,8 @@ def get_pdf(filename):
         file = download_from_aws_s3(filename, file_path)
         return send_file(file)
     else:
-        print(f"Music {filename} not found", "error")
+        flash(f"Music {filename} not found", "error")
+        return redirect("/")
 
 @app.route("/delete/<filename>")
 def delete_file(filename):
@@ -130,6 +131,7 @@ def add_notes(id):
     sql = "INSERT INTO notes (song_id, note, user_id) VALUES (:song_id, :note, :user_id)"
     db.session.execute(sql, {"song_id": id, "note": stripped_notes, "user_id": user_id})
     db.session.commit()
+    return redirect("/composition/" + request.form["song_id"])
 
 @app.route("/guide")
 def guide():
