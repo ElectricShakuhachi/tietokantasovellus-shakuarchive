@@ -86,7 +86,7 @@ def view_music(id):
         FROM notes n, users u WHERE n.user_id=u.id \
         AND n.song_id=:id GROUP BY n.note, u.username"
     result = db.session.execute(sql, {"id":id})
-    notes = result.fetchone()
+    notes = result.fetchall()
     upload_folder = app.config["UPLOAD_FOLDER"]
     return render_template("view.html", music=music, notes=notes, upload_folder=upload_folder)
 
