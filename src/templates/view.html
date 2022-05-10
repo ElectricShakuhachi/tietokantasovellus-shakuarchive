@@ -9,7 +9,39 @@
 	<p>Views: {{ music.views }}</p>
 	<form action="/delete/{{ music.filename }}" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
-		<input type="submit" value="Delete">
+		<input type="submit" value="Delete"><br>
+	</form>
+	<p>Rate composition:</p>
+	<form action="/rate/{{ music.filename }}" method="POST" enctype="multipart/form-data">
+		<input id="rate1" type="radio" name="rating" value="1">
+		<label for="rate1">1</label>
+		<input id="rate2" type="radio" name="rating" value="2">
+		<label for="rate2">2</label>
+		<input id="rate3" type="radio" name="rating" value="3">
+		<label for="rate3">3</label>
+		<input id="rate4" type="radio" name="rating" value="4">
+		<label for="rate4">4</label>
+		<input id="rate5" type="radio" name="rating" value="5">
+		<label for="rate5">5</label><br><br>
+		<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
+		<input type="hidden" name="song_id" value="{{  music.id  }}">
+		<input type="submit" value="Rate"><br>
+	</form>
+	<p>Rate difficulty:</p>
+	<form action="/rate_difficulty/{{ music.filename }}" method="POST" enctype="multipart/form-data">
+		<input id="diff1" type="radio" name="difficulty" value="1">
+		<label for="diff1">1</label>
+		<input id="diff2" type="radio" name="difficulty" value="2">
+		<label for="diff2">2</label>
+		<input id="diff3" type="radio" name="difficulty" value="3">
+		<label for="diff3">3</label>
+		<input id="diff4" type="radio" name="difficulty" value="4">
+		<label for="diff4">4</label>
+		<input id="diff5" type="radio" name="difficulty" value="5">
+		<label for="diff5">5</label><br><br>
+		<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
+		<input type="hidden" name="song_id" value="{{  music.id  }}">
+		<input type="submit" value="Rate"><br>
 	</form>
 	<embed src="{{ upload_folder }}/{{ music.filename }}" width="800px" height="1150px" scrolling="auto" /><br><br>
 	<a href="/">Home Page</a>

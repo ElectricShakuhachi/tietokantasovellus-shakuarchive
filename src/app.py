@@ -155,6 +155,30 @@ def upload_file():
             flash("Unsupported filetype", "error")
             return redirect("/upload")
 
+@app.route("/rate/<filename>", methods=["POST"])
+def rate(filename):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    username = session["username"]
+    id_fetch = db.session.execute("SELECT id FROM users WHERE username=:username", {"username":username})
+    user_id = id_fetch.fetchone()[0]
+    sql = "INSERT INTO ratings (song_id, rating, user_id) VALUES (:song_id, :rating, :user_id)"
+    db.session.execute(sql, {"song_id": request.form["song_id"], "rating": int(request.form["rating"]), "user_id": user_id})
+    db.session.commit()
+    return redirect("/view/" + filename)
+
+@app.route("/rate_difficulty/<filename>", methods=["POST"])
+def rate(filename):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    username = session["username"]
+    id_fetch = db.session.execute("SELECT id FROM users WHERE username=:username", {"username":username})
+    user_id = id_fetch.fetchone()[0]
+    sql = "INSERT INTO difficultyratings (song_id, difficulty, user_id) VALUES (:song_id, :difficulty, :user_id)"
+    db.session.execute(sql, {"song_id": request.form["song_id"], "rating": int(request.form["difficulty"]), "user_id": user_id})
+    db.session.commit()
+    return redirect("/view/" + filename)
+
 @app.route("/login", methods=["POST"])
 def login():
     username = request.form["username"]
