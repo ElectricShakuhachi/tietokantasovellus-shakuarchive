@@ -119,7 +119,7 @@ def add_notes(id):
     tags = []
     for word in request.form["notes"].split():
         if word[0] == '#':
-            tags.append[word[1:]]
+            tags.append(word[1:])
     username = session["username"]
     id_fetch = db.session.execute("SELECT id FROM users WHERE username=:username", {"username":username})
     user_id = id_fetch.fetchone()[0]
