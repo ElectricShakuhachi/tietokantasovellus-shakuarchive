@@ -73,7 +73,13 @@ def view_music(id):
     sql = "UPDATE compositions SET views = views + 1 WHERE id=(:id)"
     db.session.execute(sql, {"id":id})
     db.session.commit()
-    sql = "SELECT * FROM compositions WHERE id=(:id)"
+    sql = "SELECT c.title AS title, c.composer AS composer, \
+        c.views as views, c.genre AS genre, c.notation AS notation, \
+        AFG(r.rating) AS rating, AFG(d.difficulty) AS difficulty, \
+        u.username as uploader, c.filename as filename FROM \
+        compositions c, ratings r, difficultyratings d, users u \
+        WHERE r.song_id=c.id AND d.song_id=c.id AND c.user_id=u.id \
+        AND c.id=(:id)"
     result = db.session.execute(sql, {"id":id})
     music = result.fetchone()
     upload_folder = app.config["UPLOAD_FOLDER"]
@@ -168,7 +174,7 @@ def rate(filename):
     return redirect("/view/" + filename)
 
 @app.route("/rate_difficulty/<filename>", methods=["POST"])
-def rate(filename):
+def rate_difficulty(filename):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     username = session["username"]
