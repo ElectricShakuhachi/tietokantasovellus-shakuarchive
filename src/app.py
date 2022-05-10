@@ -161,8 +161,8 @@ def upload_file():
             flash("Unsupported filetype", "error")
             return redirect("/upload")
 
-@app.route("/rate/<filename>", methods=["POST"])
-def rate(filename):
+@app.route("/rate/", methods=["POST"])
+def rate():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     username = session["username"]
@@ -173,8 +173,8 @@ def rate(filename):
     db.session.commit()
     return redirect("/composition/" + request.form["song_id"])
 
-@app.route("/rate_difficulty/<filename>", methods=["POST"])
-def rate_difficulty(filename):
+@app.route("/rate_difficulty/", methods=["POST"])
+def rate_difficulty():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     username = session["username"]
