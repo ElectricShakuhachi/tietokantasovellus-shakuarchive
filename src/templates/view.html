@@ -58,7 +58,7 @@
 	{% if notes|length > 0 %}
 		<h2>Posted Notes:</h2>
 		{% for note in notes %}
-			<h3>Uploader: {{ note.uploader }}</h3>
+			<h4>Uploader: {{ note.uploader }}</h4>
 			<p>{{  note.note  }}</p><br>
 		{% endfor %}
 		<br>
