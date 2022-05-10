@@ -181,7 +181,7 @@ def rate_difficulty(filename):
     id_fetch = db.session.execute("SELECT id FROM users WHERE username=:username", {"username":username})
     user_id = id_fetch.fetchone()[0]
     sql = "INSERT INTO difficultyratings (song_id, difficulty, user_id) VALUES (:song_id, :difficulty, :user_id)"
-    db.session.execute(sql, {"song_id": request.form["song_id"], "rating": int(request.form["difficulty"]), "user_id": user_id})
+    db.session.execute(sql, {"song_id": request.form["song_id"], "difficulty": int(request.form["difficulty"]), "user_id": user_id})
     db.session.commit()
     return redirect("/composition/" + request.form["song_id"])
 
