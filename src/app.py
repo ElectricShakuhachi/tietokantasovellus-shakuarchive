@@ -88,7 +88,7 @@ def view_music(id):
     result = db.session.execute(sql, {"id":id})
     notes = result.fetchone()
     upload_folder = app.config["UPLOAD_FOLDER"]
-    return render_template("view.html", music=music, notes=notes upload_folder=upload_folder)
+    return render_template("view.html", music=music, notes=notes, upload_folder=upload_folder)
 
 @app.route(app.config['UPLOAD_FOLDER'] + "/<filename>", methods=["GET"])
 def get_pdf(filename):
