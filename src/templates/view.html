@@ -9,7 +9,7 @@
 	<p>Uploader: {{ music.uploader }}</p>
 	<p>Views: {{ music.views }}</p>
 	<p>Rate composition:</p>
-	<form action="/rate/{{ music.filename }}" method="POST" enctype="multipart/form-data">
+	<form action="/rate/" method="POST" enctype="multipart/form-data">
 		<input id="rate1" type="radio" name="rating" value="1">
 		<label for="rate1">1</label>
 		<input id="rate2" type="radio" name="rating" value="2">
@@ -25,7 +25,7 @@
 		<input type="submit" value="Rate"><br>
 	</form>
 	<p>Rate difficulty:</p>
-	<form action="/rate_difficulty/{{ music.filename }}" method="POST" enctype="multipart/form-data">
+	<form action="/rate_difficulty/" method="POST" enctype="multipart/form-data">
 		<input id="diff1" type="radio" name="difficulty" value="1">
 		<label for="diff1">1</label>
 		<input id="diff2" type="radio" name="difficulty" value="2">
