@@ -73,7 +73,7 @@ def view_music(id):
     sql = "UPDATE compositions SET views = views + 1 WHERE id=(:id)"
     db.session.execute(sql, {"id":id})
     db.session.commit()
-    sql = "SELECT c.title AS title, c.composer AS composer, \
+    sql = "SELECT c.id AS id, c.title AS title, c.composer AS composer, \
         c.views as views, c.genre AS genre, c.notation AS notation, \
         AVG(r.rating) AS rating, AVG(d.difficulty) AS difficulty, \
         u.username as uploader, c.filename as filename FROM \
