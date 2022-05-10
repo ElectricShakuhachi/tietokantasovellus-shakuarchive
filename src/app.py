@@ -168,6 +168,9 @@ def rate():
     username = session["username"]
     id_fetch = db.session.execute("SELECT id FROM users WHERE username=:username", {"username":username})
     user_id = id_fetch.fetchone()[0]
+    sql = "DELETE FROM ratings WHERE user_id=:user_id"
+    db.session.execute(sql, {"user_id": user_id})
+    db.session.commit()
     sql = "INSERT INTO ratings (song_id, rating, user_id) VALUES (:song_id, :rating, :user_id)"
     db.session.execute(sql, {"song_id": request.form["song_id"], "rating": int(request.form["rating"]), "user_id": user_id})
     db.session.commit()
@@ -180,6 +183,9 @@ def rate_difficulty():
     username = session["username"]
     id_fetch = db.session.execute("SELECT id FROM users WHERE username=:username", {"username":username})
     user_id = id_fetch.fetchone()[0]
+    sql = "DELETE FROM difficultyratings WHERE user_id=:user_id"
+    db.session.execute(sql, {"user_id": user_id})
+    db.session.commit()
     sql = "INSERT INTO difficultyratings (song_id, difficulty, user_id) VALUES (:song_id, :difficulty, :user_id)"
     db.session.execute(sql, {"song_id": request.form["song_id"], "difficulty": int(request.form["difficulty"]), "user_id": user_id})
     db.session.commit()
