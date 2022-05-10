@@ -4,8 +4,8 @@
 	<p>Composer: {{ music.composer }}</p>
 	<p>Genre: {{ music.genre }}</p>
 	<p>Notation type: {{ music.notation }}</p>
-	<p>Rating: {{ music.rating }}</p>
-	<p>Difficulty: {{ music.difficulty }}</p>
+	<p>Rating: {{'%0.1f' %  music.rating }}</p>
+	<p>Difficulty: {{'%0.1f' % music.difficulty }}</p>
 	<p>Uploader: {{ music.uploader }}</p>
 	<p>Views: {{ music.views }}</p>
 	<form action="/delete/{{ music.filename }}" method="POST" enctype="multipart/form-data">
