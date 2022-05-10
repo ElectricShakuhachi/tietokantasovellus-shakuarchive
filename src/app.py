@@ -112,7 +112,7 @@ def delete_file(filename):
     delete_from_aws_s3(filename)
     return redirect("/")
 
-@app.route("/notes/<id>")
+@app.route("/notes/<id>", methods=["POST"])
 def add_notes(id):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
