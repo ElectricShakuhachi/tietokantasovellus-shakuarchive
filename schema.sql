@@ -28,12 +28,6 @@ CREATE TABLE ratings (
 	user_id INTEGER REFERENCES users
 );
 
-CREATE TABLE links (
-	song_id INTEGER REFERENCES compositions,
-	link TEXT,
-	user_id INTEGER REFERENCES users
-);
-
 CREATE TABLE notes (
 	song_id INTEGER REFERENCES compositions,
 	note TEXT,

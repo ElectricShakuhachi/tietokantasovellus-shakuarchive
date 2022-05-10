@@ -82,8 +82,13 @@ def view_music(id):
         AND c.id=(:id) GROUP BY c.id, u.id"
     result = db.session.execute(sql, {"id":id})
     music = result.fetchone()
+    sql = "SELECT n.note AS note, u.username AS uploader \
+        FROM notes n, users u WHERE n.user_id=u.id \
+        AND n.song_id=:id GROUP BY n.note"
+    result = db.session.execute(sql, {"id":id})
+    notes = result.fetchone()
     upload_folder = app.config["UPLOAD_FOLDER"]
-    return render_template("view.html", music=music, upload_folder=upload_folder)
+    return render_template("view.html", music=music, notes=notes upload_folder=upload_folder)
 
 @app.route(app.config['UPLOAD_FOLDER'] + "/<filename>", methods=["GET"])
 def get_pdf(filename):
@@ -106,6 +111,25 @@ def delete_file(filename):
     db.session.commit()
     delete_from_aws_s3(filename)
     return redirect("/")
+
+@app.route("/notes/<id>")
+def add_notes(id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    tags = []
+    for word in request.form["notes"].split():
+        if word[0] == '#':
+            tags.append[word[1:]]
+    username = session["username"]
+    id_fetch = db.session.execute("SELECT id FROM users WHERE username=:username", {"username":username})
+    user_id = id_fetch.fetchone()[0]
+    sql = "INSERT INTO tags (song_id, tag, user_id) VALUES (:song_id, :tag, :user_id)"
+    for tag in tags:
+        db.session.execute(sql, {"song_id": id, "tag": tag, "user_id": user_id})
+    stripped_notes = request.form["notes"].replace("#", "")
+    sql = "INSERT INTO notes (song_id, note, user_id) VALUES (:song_id, :note, :user_id)"
+    db.session.execute(sql, {"song_id": id, "note": stripped_notes, "user_id": user_id})
+    db.session.commit()
 
 @app.route("/guide")
 def guide():

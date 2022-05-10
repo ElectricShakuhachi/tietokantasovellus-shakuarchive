@@ -42,12 +42,26 @@
 	</form>
 	<br>
 	<embed src="{{ upload_folder }}/{{ music.filename }}" width="800px" height="1150px" scrolling="auto" /><br><br>
-	{% if session.username == music.uploader %}
-	<form action="/delete/{{ music.filename }}" method="POST" enctype="multipart/form-data">
+	<p>You may submit notes about the composition here. Any word preceeded by a hashtag # will also be interpreted as a categorizing tag.</p>
+	<form action="/notes/{{  music.id  }}" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
-		<input type="submit" value="Delete"><br>
+		<textarea name="notes"></textarea>
+		<input type="submit" value="Submit Notes"><br>
 	</form>
+	{% if session.username == music.uploader %}
+		<form action="/delete/{{ music.filename }}" method="POST" enctype="multipart/form-data">
+			<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
+			<input type="submit" value="Delete"><br>
+		</form>
 	{% endif %}
 	<br>
+	{% if notes|lenght > 0 %}
+		<h2>Posted Notes:</h2>
+		{% for note in notes %}
+			<h3>Uploader: {{ note.uploader }}</h3>
+			<p>{{  note.note  }}</p><br>
+		{% endfor %}
+		<br>
+	{% endif %}
 	<a href="/">Home Page</a>
 {% endblock %}
