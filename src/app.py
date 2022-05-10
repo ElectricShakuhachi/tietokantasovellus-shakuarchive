@@ -79,7 +79,7 @@ def view_music(id):
         u.username as uploader, c.filename as filename FROM \
         compositions c, ratings r, difficultyratings d, users u \
         WHERE r.song_id=c.id AND d.song_id=c.id AND c.user_id=u.id \
-        AND c.id=(:id) GROUP BY c.title"
+        AND c.id=(:id) GROUP BY c.id"
     result = db.session.execute(sql, {"id":id})
     music = result.fetchone()
     upload_folder = app.config["UPLOAD_FOLDER"]
