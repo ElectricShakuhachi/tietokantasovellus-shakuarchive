@@ -171,7 +171,7 @@ def rate(filename):
     sql = "INSERT INTO ratings (song_id, rating, user_id) VALUES (:song_id, :rating, :user_id)"
     db.session.execute(sql, {"song_id": request.form["song_id"], "rating": int(request.form["rating"]), "user_id": user_id})
     db.session.commit()
-    return redirect("/view/" + filename)
+    return redirect("/view/" + request.form["song_id"])
 
 @app.route("/rate_difficulty/<filename>", methods=["POST"])
 def rate_difficulty(filename):
@@ -183,7 +183,7 @@ def rate_difficulty(filename):
     sql = "INSERT INTO difficultyratings (song_id, difficulty, user_id) VALUES (:song_id, :difficulty, :user_id)"
     db.session.execute(sql, {"song_id": request.form["song_id"], "rating": int(request.form["difficulty"]), "user_id": user_id})
     db.session.commit()
-    return redirect("/view/" + filename)
+    return redirect("/view/" + request.form["song_id"])
 
 @app.route("/login", methods=["POST"])
 def login():
