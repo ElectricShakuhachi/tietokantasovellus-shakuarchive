@@ -14,11 +14,11 @@
 				<input id="searchname" type="text" name="name">
 				<label for="searchcomposer">Composer</label>
 				<input id="searchcomposer" type="text" name="composer">
-				<label for="searchtags">Tags</label><br><br>
-				<input id="searchtags" type="text" name="tags">
+				<label for="searchtags">Tags</label>
+				<input id="searchtags" type="text" name="tags"><br><br>
 				<label for="searchmindifficulty">Min. Difficulty</label>
 				<input id="searchmindifficulty" type="number" name="min-difficulty">
-				<label for="searchmaxdifficulty">Max. Difficulty</label>
+				<label for="searchmaxdifficulty">Max. Difficulty</label><br><br>
 				<input id="searchmaxdifficulty" type="number" name="max-difficulty">
 				<label for="searchminrating">Min. Rating</label>
 				<input id="searchminrating" type="number" name="min-rating">
@@ -32,7 +32,7 @@
 				<label for="selectgenre">Genre</label> -->
 
 				<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
-				<br>
+				<br><br>
 				<input type="submit" value="Search">
 			</form>
 			<br><br>
