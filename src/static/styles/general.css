@@ -57,3 +57,7 @@ tr:nth-child(even) {
 	padding: 20px;
 	margin: 10px;
 }
+
+#searchboxes {
+	margin: 10px;
+}
