@@ -76,10 +76,10 @@ def view_music(id):
     sql = "SELECT c.id AS id, c.title AS title, c.composer AS composer, \
         c.views as views, c.genre AS genre, c.notation AS notation, \
         AVG(r.rating) AS rating, AVG(d.difficulty) AS difficulty, \
-        u.username as uploader, c.filename as filename FROM \
-        compositions c, ratings r, difficultyratings d, users u \
+        u.username as uploader, c.filename as filename, t.tags as tags FROM \
+        compositions c, ratings r, difficultyratings d, users u, tags t \
         WHERE r.song_id=c.id AND d.song_id=c.id AND c.user_id=u.id \
-        AND c.id=(:id) GROUP BY c.id, u.id"
+        AND t.song_id=c.id AND c.id=(:id) GROUP BY c.id, u.id"
     result = db.session.execute(sql, {"id":id})
     music = result.fetchone()
     sql = "SELECT n.note AS note, u.username AS uploader \
