@@ -208,7 +208,7 @@ def search():
     max_rating = request.form["max-rating"]
     if name:
         name = "%" + "%".join(name.split()) + "%"
-        sql += "AND c.title LIKE :name"
+        sql += "AND c.title LIKE :name "
     if composer:
         composer = "%" + "%".join(composer.split()) + "%"
         sql += "AND c.composer LIKE :composer "
