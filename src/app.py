@@ -216,13 +216,13 @@ def search():
         tags = "%" + "%".join(tags.split()) + "%"
         sql += "AND LOWER(c.tags) LIKE LOWER(:tags) "
     if min_difficulty:
-        sql += "AND AVG(d.difficulty) >= :min_difficulty "
+        sql += "AND difficulty >= :min_difficulty "
     if max_difficulty:
-        sql += "AND AVG(d.difficulty) <= :max_difficulty "
+        sql += "AND difficulty <= :max_difficulty "
     if min_rating:
-        sql += "AND AVG(r.rating) >= :min_rating "
+        sql += "AND rating >= :min_rating "
     if max_rating:
-        sql += "AND AVG(r.rating) <= :max_rating "
+        sql += "AND rating <= :max_rating "
     sql += "GROUP BY c.id"
     result = db.session.execute(sql, {"name": name, "composer": composer,
     "tags": tags, "min_rating": min_rating, "max_rating": max_rating,
