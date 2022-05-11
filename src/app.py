@@ -187,6 +187,46 @@ def upload_file():
             flash("Unsupported filetype", "error")
             return redirect("/upload")
 
+@app.route("/search", methods=["POST"])
+def search():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    sql = "SELECT c.id as id, c.title AS title, \
+            c.composer AS composer, c.views AS views, \
+            c.genre AS genre, c.notation AS notation, \
+            AVG(d.difficulty) AS difficulty, \
+            AVG(r.rating) AS rating \
+            FROM compositions c, ratings r, \
+            difficultyratings d \
+            WHERE r.song_id=c.id AND d.song_id=c.id "
+    name = request.form["name"]
+    composer = request.form["composer"]
+    tags = request.form["tags"]
+    min_difficulty = request.form["min-difficulty"]
+    max_difficulty = request.form["max-difficulty"]
+    min_rating = request.form["min-rating"]
+    max_rating = request.form["max-rating"]
+    if name:
+        sql += "AND CONTAINS(c.title, :name) "
+    if composer:
+        sql += "AND CONTAINS(c.composer, :composer) "
+    if tags:
+        sql += "AND CONTAINS(c.tags :tags) "
+    if min_difficulty:
+        sql += "AND AVG(d.difficulty) >= :min_difficulty "
+    if max_difficulty:
+        sql += "AND AVG(d.difficulty) <= :max_difficulty "
+    if min_rating:
+        sql += "AND AVG(r.rating) >= :min_rating "
+    if max_rating:
+        sql += "AND AVG(r.rating) <= :max_rating "
+    sql += "GROUP BY c.id"
+    result = db.session.execute(sql, {"name": name, "composer": composer,
+    "tags": tags, "min_rating": min_rating, "max_rating": max_rating,
+    "min_difficulty": min_difficulty, "max_difficulty": max_difficulty})
+    compositions = result.fetchall()
+    return render_template("index.html", count=len(compositions), compositions=compositions)
+
 @app.route("/rate/", methods=["POST"])
 def rate():
     if session["csrf_token"] != request.form["csrf_token"]:

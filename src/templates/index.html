@@ -8,6 +8,26 @@
 		<div id="musiclist">
 			<h2>Available Sheet music</h2>
 			<p>Amount available: {{ count }}</p><hr>
+			<h4>Search:</h4>
+			<form action="/search" method="POST" enctype="multipart/form-data">
+				<label for="searchname">Name:</label>
+				<input id="searchname" type="text" name="name">
+				<label for="searchcomposer">Composer</label>
+				<input id="searchcomposer" type="text" name="composer">
+				<label for="searchtags">Tags</label>
+				<input id="searchtags" type="text" name="tags">
+				<label for="searchmindifficulty">Min. Difficulty</label>
+				<input id="searchmindifficulty" type="number" name="tags">
+				<label for="searchmaxdifficulty">Max. Difficulty</label>
+				<input id="searchmaxdifficulty" type="number" name="tags">
+				<label for="searchminrating">Min. Rating</label>
+				<input id="searchminrating" type="number" name="tags">
+				<label for="searchmaxrating">Max. Rating</label>
+				<input id="searchmaxrating" type="number" name="tags">
+
+				<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
+				<input type="submit" value="Search">
+			</form>
 			<table>
 				<tr>
 					<th>Title</th>
