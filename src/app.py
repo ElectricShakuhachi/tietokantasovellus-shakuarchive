@@ -208,13 +208,13 @@ def search():
     max_rating = request.form["max-rating"]
     if name:
         name = "%" + "%".join(name.split()) + "%"
-        sql += "AND c.title LIKE :name "
+        sql += "AND LOWER(c.title) LIKE LOWER(:name) "
     if composer:
         composer = "%" + "%".join(composer.split()) + "%"
-        sql += "AND c.composer LIKE :composer "
+        sql += "AND LOWER(c.composer) LIKE LOWER(:composer) "
     if tags:
         tags = "%" + "%".join(tags.split()) + "%"
-        sql += "AND c.tags LIKE :tags "
+        sql += "AND LOWER(c.tags) LIKE LOWER(:tags) "
     if min_difficulty:
         sql += "AND AVG(d.difficulty) >= :min_difficulty "
     if max_difficulty:
