@@ -8,7 +8,7 @@
 	<p>Difficulty: {{'%0.1f' % music.difficulty }}</p>
 	<p>Uploader: {{ music.uploader }}</p>
 	<p>Views: {{ music.views }}</p>
-	<p>Tags: {{ music.tags }}</p>
+	<p>Tags: {{ music.tag }}</p>
 	<p>Rate composition:</p>
 	<form action="/rate/" method="POST" enctype="multipart/form-data">
 		<input id="rate1" type="radio" name="rating" value="1">
