@@ -207,11 +207,14 @@ def search():
     min_rating = request.form["min-rating"]
     max_rating = request.form["max-rating"]
     if name:
-        sql += "AND CONTAINS(c.title, :name) "
+        name = "%" + "%".join(name.split()) + "%"
+        sql += "AND c.title LIKE :pattern"
     if composer:
-        sql += "AND CONTAINS(c.composer, :composer) "
+        composer = "%" + "%".join(composer.split()) + "%"
+        sql += "AND c.composer LIKE :composer "
     if tags:
-        sql += "AND CONTAINS(c.tags :tags) "
+        tags = "%" + "%".join(tags.split()) + "%"
+        sql += "AND c.tags LIKE :tags "
     if min_difficulty:
         sql += "AND AVG(d.difficulty) >= :min_difficulty "
     if max_difficulty:
