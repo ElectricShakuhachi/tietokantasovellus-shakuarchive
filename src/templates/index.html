@@ -14,20 +14,28 @@
 				<input id="searchname" type="text" name="name">
 				<label for="searchcomposer">Composer</label>
 				<input id="searchcomposer" type="text" name="composer">
-				<label for="searchtags">Tags</label>
+				<label for="searchtags">Tags</label><br><br>
 				<input id="searchtags" type="text" name="tags">
 				<label for="searchmindifficulty">Min. Difficulty</label>
-				<input id="searchmindifficulty" type="number" name="tags">
+				<input id="searchmindifficulty" type="number" name="min-difficulty">
 				<label for="searchmaxdifficulty">Max. Difficulty</label>
-				<input id="searchmaxdifficulty" type="number" name="tags">
+				<input id="searchmaxdifficulty" type="number" name="max-difficulty">
 				<label for="searchminrating">Min. Rating</label>
-				<input id="searchminrating" type="number" name="tags">
+				<input id="searchminrating" type="number" name="min-rating">
 				<label for="searchmaxrating">Max. Rating</label>
-				<input id="searchmaxrating" type="number" name="tags">
+				<input id="searchmaxrating" type="number" name="max-rating">
+				<!-- <label for="selectnotation">Notation type</label>
+				<select id="selectnotation" name="notation">
+					{% for notation in notations %}
+					{% endfor %}
+				</select>
+				<label for="selectgenre">Genre</label> -->
 
 				<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
+				<br>
 				<input type="submit" value="Search">
 			</form>
+			<br><br>
 			<table>
 				<tr>
 					<th>Title</th>
