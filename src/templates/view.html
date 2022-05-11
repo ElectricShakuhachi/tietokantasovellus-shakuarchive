@@ -48,12 +48,6 @@
 		<textarea name="notes"></textarea>
 		<input type="submit" value="Submit Notes"><br>
 	</form>
-	{% if session.username == music.uploader %}
-		<form action="/delete/{{ music.filename }}" method="POST" enctype="multipart/form-data">
-			<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
-			<input type="submit" value="Delete"><br>
-		</form>
-	{% endif %}
 	<br>
 	{% if notes|length > 0 %}
 		<h2>Posted Notes:</h2>
@@ -63,5 +57,11 @@
 		{% endfor %}
 		<br>
 	{% endif %}
+	{% if session.username == music.uploader %}
+	<form action="/delete/{{ music.filename }}" method="POST" enctype="multipart/form-data">
+		<input type="hidden" name="csrf_token" value="{{  session.csrf_token  }}">
+		<input type="submit" value="Delete composition from site"><br>
+	</form>
+{% endif %}
 	<a href="/">Home Page</a>
 {% endblock %}
