@@ -76,19 +76,22 @@ def view_music(id):
     sql = "SELECT c.id AS id, c.title AS title, c.composer AS composer, \
         c.views as views, c.genre AS genre, c.notation AS notation, \
         AVG(r.rating) AS rating, AVG(d.difficulty) AS difficulty, \
-        u.username as uploader, c.filename as filename, t.tag as tag FROM \
-        compositions c, ratings r, difficultyratings d, users u, tags t \
+        u.username as uploader, c.filename as filename FROM \
+        compositions c, ratings r, difficultyratings d, users u \
         WHERE r.song_id=c.id AND d.song_id=c.id AND c.user_id=u.id \
-        AND t.song_id=c.id AND c.id=(:id) GROUP BY c.id, u.id, t.tag"
+        AND t.song_id=c.id AND c.id=(:id) GROUP BY c.id, u.id"
     result = db.session.execute(sql, {"id":id})
     music = result.fetchone()
+    sql = "SELECT tag FROM tags WHERE song_id=:id"
+    result = db.session.execute(sql, {"id":id})
+    tags = result.fetchall()    
     sql = "SELECT n.note AS note, u.username AS uploader \
         FROM notes n, users u WHERE n.user_id=u.id \
         AND n.song_id=:id GROUP BY n.note, u.username"
     result = db.session.execute(sql, {"id":id})
     notes = result.fetchall()
     upload_folder = app.config["UPLOAD_FOLDER"]
-    return render_template("view.html", music=music, notes=notes, upload_folder=upload_folder)
+    return render_template("view.html", music=music, notes=notes, tags=tags, upload_folder=upload_folder)
 
 @app.route(app.config['UPLOAD_FOLDER'] + "/<filename>", methods=["GET"])
 def get_pdf(filename):
