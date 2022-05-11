@@ -50,3 +50,11 @@ th, td {
 tr:nth-child(even) {
 	background-color: lightblue;
 }
+
+#searchform {
+	background: beige;
+	border-radius: 20px;
+	padding: 20px;
+	margin: 10px;
+}
+
